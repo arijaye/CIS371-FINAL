@@ -1,0 +1,36 @@
+extends layout
+
+block content
+	include ./menu.pug
+	if(user.admin)
+		h1 Add a User
+		form(action='/addUser' method='post')
+			label(for='username'): b Username:
+			input(type='text' name='username')
+
+			label(for='password'): b Password:
+			input(type='password' name='password')
+
+			button(type='submit') Submit
+
+	h1 Update a User
+	form(action='/updateUser' method='post')
+		if(user.admin)
+			label(for='username'): b Username:
+			input(type='username' name='username')
+		label(for='currentPassword'): b Current Password:
+		input(type='currentPassword' name='currentPassword')
+		label(for='newPassword'): b New Password:
+		input(type='newPassword' name='newPassword')
+		button(type='submit') Submit
+
+	if(user.admin)
+		h1 Delete a User
+		form(action='/deleteUser' method='post')
+			label(for='username'): b Username:
+			input(type='text' name='username')
+
+			label(for='password'): b Password:
+			input(type='password' name='password')
+
+			button(type='submit') Submit

@@ -1,0 +1,32 @@
+{
+  "name": "expressapi",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "dependencies": {
+    "cookie-parser": "~1.4.4",
+    "crypto": "^1.0.1",
+    "debug": "~2.6.9",
+    "express": "^4.17.1",
+    "express-generator": "^4.16.1",
+    "express-session": "^1.17.2",
+    "http": "^0.0.1-security",
+    "http-errors": "~1.6.3",
+    "mongoose": "^6.0.13",
+    "node-fetch": "file:node_modules/node-fetch",
+    "package": "^1.0.1",
+    "package.json": "^2.0.1",
+    "passport": "^0.5.0",
+    "passport-http": "^0.3.0",
+    "passport-local": "^1.0.0",
+    "path": "^0.12.7",
+    "pbkdf2": "^3.1.2",
+    "pug": "^3.0.2",
+    "winston": "^3.3.3"
+  },
+  "devDependencies": {
+    "webpack-cli": "^4.9.1"
+  }
+}

@@ -1,0 +1,131 @@
+extends layout
+
+block content
+	include ./menu.pug
+
+	form(id='form' action="" method="")
+		
+		//-OPTIONS
+		select(id="entryOptions")
+			option(value="select") Select Option
+			option(value="create") Create Entry
+			option(value="edit") Edit Entry
+			option(value="delete") Delete Entry
+		
+		button(type='button' id='optionButton' onclick='getOption()') Submit
+		br
+
+		//- INPUT AREAS
+		label(id='entryIDLabel' for='entry' hidden=true): b Note ID:
+		input(id='entryIDInput' type='entry' name='entryID' hidden=true)
+
+		label(id='moodLabel' for='mood' hidden=true): b Mood:
+		input(id='moodInput' type='mood' name='mood' hidden=true)
+
+		label(id='entryLabel' for='entry' hidden=true): b Entry:
+		input(id='entryInput' type='entry' name='entry' hidden=true)
+				
+		//- BUTTONS FOR DIFFERENT ACTIONS WITH ENTRIES
+		button(type='submit' formaction='/entries/postEntry' formmethod='post' id='createButton' hidden=true) Submit
+		button(type='submit' formaction='/entries/editEntry' formmethod='post' id='editButton' hidden=true) Submit
+		button(type='submit' formaction='/entries/deleteEntry' formmethod='post' id='deleteButton' hidden=true) Submit
+
+		br
+		br
+
+		label(for='latitude'): b Latitude: 
+		input#latitude(class="info" type="text" name="latitude" value="" readonly)
+		
+		br
+
+		label(for='longitude'): b Longitude: 
+		input#longitude(class="info" type="text" name="longitude" value="" readonly)
+
+		br
+
+		label(for='weather'): b Weather: 
+		input#weather(class="info" type="text" name="weather" value="" readonly)
+
+		script(type='text/javascript').
+			var lat = document.getElementById("latitude");
+			var lon = document.getElementById("longitude");
+			var weather = document.getElementById("weather");
+
+			if(navigator.geolocation){
+				navigator.geolocation.getCurrentPosition(async (position) => {
+
+				lat.value = "" + position.coords.latitude;
+				lon.value = "" + position.coords.longitude;
+						
+				const weatherFetch = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&appid=9156fd5e60c4e94283c7aa372906e3c5`)
+					.then(data => data.json())
+					.then(json => {
+						this.weather.value = "" + json.weather[0].description;
+					});
+					return;
+				});
+			}
+			
+			function getOption(){
+				let options = document.getElementById('entryOptions');
+
+				document.getElementById('moodInput').hidden = true;
+				document.getElementById('moodLabel').hidden = true;
+
+				document.getElementById('entryInput').hidden = true;
+				document.getElementById('entryLabel').hidden = true;
+
+				document.getElementById('entryIDInput').hidden = true
+				document.getElementById('entryIDLabel').hidden = true;
+
+				document.getElementById('createButton').hidden = true;
+				document.getElementById('editButton').hidden = true;
+				document.getElementById('deleteButton').hidden = true;
+
+				if(options.selectedIndex == 1){
+					document.getElementById('moodInput').hidden = false;
+					document.getElementById('moodLabel').hidden = false;
+
+					document.getElementById('entryInput').hidden = false;
+					document.getElementById('entryLabel').hidden = false;
+
+					document.getElementById('createButton').hidden = false;
+				} else if(options.selectedIndex == 2) {
+				       	document.getElementById('entryIDInput').hidden = false;
+					document.getElementById('entryIDLabel').hidden = false;
+					
+					document.getElementById('moodInput').hidden = false;
+					document.getElementById('moodLabel').hidden = false;
+
+					document.getElementById('entryInput').hidden = false;
+					document.getElementById('entryLabel').hidden = false;
+
+					document.getElementById('editButton').hidden = false;
+				} else if(options.selectedIndex == 3) {
+					//document.getElementById('entryInput').hidden = false;
+					//document.getElementById('entryLabel').hidden = false;
+					document.getElementById('entryIDInput').hidden = false;
+					document.getElementById('entryIDLabel').hidden = false;
+					
+					document.getElementById('deleteButton').hidden = false;
+				}
+			}
+
+	table.table.table-striped
+		tr
+		th NOTE ID
+		th Date
+		th Mood
+		th Entry
+		th Weather
+
+		each e in entries
+			tr
+			td= e._id
+			td= e.date
+			td= e.mood
+			td= e.entry
+			td= e.weather
+
+	
+
